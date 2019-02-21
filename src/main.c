@@ -710,6 +710,7 @@ pcm_reader_t *open_input(aacenc_param_ex_t *params)
 {
     pcm_io_context_t io = { 0 };
     pcm_reader_t *reader = 0;
+    pcm_sample_description_t *fmt;
 
     if ((params->input_fp = aacenc_fopen(params->input_filename, "rb")) == 0) {
         aacenc_fprintf(stderr, "ERROR: %s: %s\n", params->input_filename,
@@ -763,13 +764,23 @@ pcm_reader_t *open_input(aacenc_param_ex_t *params)
             goto FAIL;
         }
     }
-    reader = pcm_open_native_converter(reader);
-    if (reader && PCM_IS_FLOAT(pcm_get_format(reader)))
-        reader = limiter_open(reader);
-    if (reader && (reader = pcm_open_sint16_converter(reader)) != 0) {
-        if (do_smart_padding(params->profile))
-            reader = extrapolater_open(reader);
+    fmt = pcm_get_format(reader);
+    // Passthrough for native SINT16 format
+#if WORDS_BIGENDIAN
+    if (fmt->sample_type != PCM_TYPE_SINT_BE
+#else
+    if (fmt->sample_type != PCM_TYPE_SINT || 
+#endif
+        fmt->bits_per_channel != 16 || fmt->channels_per_frame * 2 != fmt->bytes_per_frame) {
+        if (!(reader = pcm_open_native_converter(reader)))
+            goto FAIL;
+        if (PCM_IS_FLOAT(pcm_get_format(reader)) && !(reader = limiter_open(reader)))
+            goto FAIL;
+        if (!(reader = pcm_open_sint16_converter(reader)))
+            goto FAIL;
     }
+    if (do_smart_padding(params->profile))
+        reader = extrapolater_open(reader);
     return reader;
 FAIL:
     return 0;
