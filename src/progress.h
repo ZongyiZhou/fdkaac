@@ -6,16 +6,16 @@
 #define PROGRESS_H
 
 typedef struct aacenc_progress_t {
-    double start;
-    double timescale;
+    int64_t start;
+    int64_t prev_tick;
+    double timescale_rcp;
     int64_t total;
-    int64_t processed;
 } aacenc_progress_t;
 
 void aacenc_progress_init(aacenc_progress_t *progress, int64_t total,
                           int32_t timescale);
 void aacenc_progress_update(aacenc_progress_t *progress, int64_t current,
-                            int period);
+                            int32_t period);
 void aacenc_progress_finish(aacenc_progress_t *progress, int64_t current);
 
 #endif

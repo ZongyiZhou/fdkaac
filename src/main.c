@@ -545,7 +545,7 @@ int encode(aacenc_param_ex_t *params, pcm_reader_t *reader,
             }
             if (!params->silent)
                 aacenc_progress_update(&progress, pcm_get_position(reader),
-                                       fmt->sample_rate * 2);
+                                       250);
         }
         ip = ibuf;
         remaining = nread;

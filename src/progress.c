@@ -28,7 +28,7 @@ void seconds_to_hms(double seconds, int *h, int *m, int *s, int *millis)
     *m = (int)(seconds / 60.0);
     seconds -= *m * 60;
     *s = (int)seconds;
-    *millis = (int)((seconds - *s) * 1000.0 + 0.5);
+    *millis = (int)((seconds - *s) * 1000.0);
 }
 
 static
@@ -46,38 +46,38 @@ void aacenc_progress_init(aacenc_progress_t *progress, int64_t total,
                           int32_t timescale)
 {
     progress->start = aacenc_timer();
-    progress->timescale = timescale;
+    progress->timescale_rcp = 1.0 / timescale;
+    progress->prev_tick = progress->start;
     progress->total = total;
 }
 
 void aacenc_progress_update(aacenc_progress_t *progress, int64_t current,
-                            int period)
+                            int32_t period)
 {
-    double seconds = current / progress->timescale;
-    double ellapsed = (aacenc_timer() - progress->start) / 1000.0;
-    double speed = ellapsed ? seconds / ellapsed : 1.0;
-    int percent = progress->total ? 100.0 * current / progress->total + .5
-                                  : 100;
-    double eta = current ? ellapsed * (progress->total / (double)current - 1.0)
-                         : progress->total ? DBL_MAX : 0;
-
-    if (current < progress->processed + period)
+    int64_t now = aacenc_timer();
+    if (now - progress->prev_tick < period)
         return;
+    double elapsed = (now - progress->start) * 1E-3;
+    double seconds = current * progress->timescale_rcp;
+    double speed = elapsed ? seconds / elapsed : 1.0;
+    progress->prev_tick = now;
 
     if (progress->total == INT64_MAX) {
         putc('\r', stderr);
         print_seconds(stderr, seconds);
         fprintf(stderr, " (%.0fx)   ", speed);
     } else {
-        fprintf(stderr, "\r[%d%%] ", percent);
+        double percent = progress->total ? 100.0 * current / progress->total : 100;
+        double eta = current ? elapsed * (progress->total / (double)current - 1.0)
+                             : progress->total ? DBL_MAX : 0;
+        fprintf(stderr, "\r[%.0f%%] ", percent);
         print_seconds(stderr, seconds);
         putc('/', stderr);
-        print_seconds(stderr, progress->total / progress->timescale);
-        fprintf(stderr, " (%.0fx), ETA ", speed);
+        print_seconds(stderr, progress->total * progress->timescale_rcp);
+        fprintf(stderr, speed > 9.94? " (%.0fx), ETA " : " (%.1fx), ETA ", speed);
         print_seconds(stderr, eta);
         fputs("   ", stderr);
     }
-    progress->processed = current;
 }
 
 void aacenc_progress_finish(aacenc_progress_t *progress, int64_t current)
