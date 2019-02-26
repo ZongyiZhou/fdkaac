@@ -228,16 +228,23 @@ static int read_frames(pcm_reader_t *reader, void *buffer, unsigned nframes)
 {
     pcm_native_converter_t *self = (pcm_native_converter_t *)reader;
     const pcm_sample_description_t *sfmt = pcm_get_format(self->src);
-    unsigned bytes = nframes * sfmt->bytes_per_frame;
-
-    if (self->capacity < bytes) {
-        void *p = realloc(self->pivot, bytes);
-        if (!p) return -1;
-        self->pivot = p;
-        self->capacity = bytes;
+    void *sbuf = buffer;
+    if (sfmt->bits_per_channel < self->format.bits_per_channel) {
+        unsigned bytes = nframes * sfmt->channels_per_frame * MAX_BYTES_PER_SAMPLE;
+        if (self->capacity < bytes) {
+            void *p = realloc(self->pivot, bytes);
+            if (!p) return -1;
+            self->pivot = p;
+            self->capacity = bytes;
+        }
+        nframes = pcm_read_frames(self->src, self->pivot, nframes);
+        sbuf = self->pivot;
     }
-    nframes = pcm_read_frames(self->src, self->pivot, nframes);
-    if (pcm_convert_to_native(sfmt, self->pivot, nframes, buffer) < 0)
+    else {
+        // Convert to native in-place
+        nframes = pcm_read_frames(self->src, buffer, nframes);
+    }
+    if (pcm_convert_to_native(sfmt, sbuf, nframes, buffer) < 0)
         return -1;
     return nframes;
 }
@@ -246,7 +253,8 @@ static void teardown(pcm_reader_t **reader)
 {
     pcm_native_converter_t *self = (pcm_native_converter_t *)*reader;
     pcm_teardown(&self->src);
-    free(self->pivot);
+    if (self->pivot)
+        free(self->pivot);
     free(self);
     *reader = 0;
 }
@@ -258,14 +266,24 @@ static pcm_reader_vtbl_t my_vtable = {
 pcm_reader_t *pcm_open_native_converter(pcm_reader_t *reader)
 {
     pcm_native_converter_t *self = 0;
-    pcm_sample_description_t *fmt;
+    pcm_sample_description_t *fmt = pcm_get_format(reader);
 
+    if (fmt->bits_per_channel == 32 && fmt->channels_per_frame * 4 == fmt->bytes_per_frame &&
+#if WORDS_BIGENDIAN
+        (fmt->sample_type == PCM_TYPE_FLOAT_BE || fmt->sample_type == PCM_TYPE_SINT_BE)){
+#else
+        (fmt->sample_type == PCM_TYPE_FLOAT || fmt->sample_type == PCM_TYPE_SINT)){
+#endif
+        // Already native format without padding. No converter needed.
+        return reader;
+    }
     if ((self = calloc(1, sizeof(pcm_native_converter_t))) == 0)
         return 0;
     self->src = reader;
     self->vtbl = &my_vtable;
-    memcpy(&self->format, pcm_get_format(reader), sizeof(self->format));
+    memcpy(&self->format, fmt, sizeof(self->format));
     fmt = &self->format;
+    fmt->bits_per_channel = 32;
     fmt->sample_type = PCM_IS_FLOAT(fmt) ?  PCM_TYPE_FLOAT : PCM_TYPE_SINT;
     fmt->bytes_per_frame = 4 * fmt->channels_per_frame;
     return (pcm_reader_t *)self;

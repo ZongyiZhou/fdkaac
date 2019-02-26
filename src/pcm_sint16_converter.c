@@ -46,22 +46,31 @@ static int read_frames(pcm_reader_t *reader, void *buffer, unsigned nframes)
     unsigned i, count;
     pcm_sint16_converter_t *self = (pcm_sint16_converter_t *)reader;
     const pcm_sample_description_t *sfmt = pcm_get_format(self->src);
-    unsigned bytes = nframes * sfmt->bytes_per_frame;
-    if (self->capacity < bytes) {
-        void *p = realloc(self->pivot, bytes);
-        if (!p) return -1;
-        self->pivot = p;
-        self->capacity = bytes;
+    void *sbuf = buffer;
+    if (sfmt->bits_per_channel < self->format.bits_per_channel) {
+        unsigned bytes = nframes * sfmt->channels_per_frame * MAX_BYTES_PER_SAMPLE;
+        if (self->capacity < bytes) {
+            void *p = realloc(self->pivot, bytes);
+            if (!p) return -1;
+            self->pivot = p;
+            self->capacity = bytes;
+        }
+        nframes = pcm_read_frames(self->src, self->pivot, nframes);
+        sbuf = self->pivot;
+    } else {
+        // Convert to S16 in-place
+        nframes = pcm_read_frames(self->src, buffer, nframes);
     }
-    nframes = pcm_read_frames(self->src, self->pivot, nframes);
+    if (!nframes)
+        return 0;
     count = nframes * sfmt->channels_per_frame;
     if (PCM_IS_FLOAT(sfmt)) {
-        float   *ip = self->pivot;
+        float   *ip = sbuf;
         int16_t *op = buffer;
         for (i = 0; i < count; ++i)
             op[i] = pcm_clip(ip[i] * 32768.0, -32768.0, 32767.0);
     } else {
-        int32_t *ip = self->pivot;
+        int32_t *ip = sbuf;
         int16_t *op = buffer;
         if (sfmt->bits_per_channel <= 16) {
             for (i = 0; i < count; ++i)
@@ -80,7 +89,8 @@ static void teardown(pcm_reader_t **reader)
 {
     pcm_sint16_converter_t *self = (pcm_sint16_converter_t *)*reader;
     pcm_teardown(&self->src);
-    free(self->pivot);
+    if (self->pivot)
+        free(self->pivot);
     free(self);
     *reader = 0;
 }
