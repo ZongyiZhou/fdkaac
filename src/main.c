@@ -532,7 +532,7 @@ int encode(aacenc_param_ex_t *params, pcm_reader_t *reader,
     const pcm_sample_description_t *fmt = pcm_get_format(reader);
     const int is_padding = do_smart_padding(params->profile);
 
-    ibuf = malloc(frame_length * fmt->bytes_per_frame);
+    ibuf = alloca(frame_length * fmt->channels_per_frame * MAX_BYTES_PER_SAMPLE);
     aacenc_progress_init(&progress, pcm_get_length(reader), fmt->sample_rate);
 
     for (;;) {
@@ -591,7 +591,6 @@ DONE:
         aacenc_progress_finish(&progress, pcm_get_position(reader));
     rc = frames_written;
 END:
-    if (ibuf) free(ibuf);
     if (obuf[0].data) free(obuf[0].data);
     if (obuf[1].data) free(obuf[1].data);
     return rc;

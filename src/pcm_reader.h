@@ -115,10 +115,11 @@ pcm_reader_t *caf_open(pcm_io_context_t *io,
                        aacenc_tag_callback_t tag_callback, void *tag_ctx);
 
 pcm_reader_t *pcm_open_native_converter(pcm_reader_t *reader);
-pcm_reader_t *pcm_open_float_converter(pcm_reader_t *reader);
+//pcm_reader_t *pcm_open_float_converter(pcm_reader_t *reader);
 pcm_reader_t *pcm_open_sint16_converter(pcm_reader_t *reader);
 
 pcm_reader_t *extrapolater_open(pcm_reader_t *reader);
 pcm_reader_t *limiter_open(pcm_reader_t *reader);
 
+#define MAX_BYTES_PER_SAMPLE 8
 #endif

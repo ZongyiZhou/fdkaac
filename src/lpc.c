@@ -146,7 +146,7 @@ void vorbis_lpc_predict(float *coeff,short *prime,int m,
 
   long i,j,o,p;
   float y;
-  float *work=malloc(sizeof(*work)*(m+n));
+  float *work=alloca(sizeof(*work)*(m+n));
 
   if(!prime)
     for(i=0;i<m;i++)
@@ -163,7 +163,6 @@ void vorbis_lpc_predict(float *coeff,short *prime,int m,
       y-=work[o++]*coeff[--p];
 
     work[o]=y;
-    data[i*stride]=lrint(pcm_clip(y*32768.0,-32768.0,32767.0));
+    data[i*stride] = pcm_float_2_s16(y);
   }
-  free(work);
 }
