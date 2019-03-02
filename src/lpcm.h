@@ -52,7 +52,7 @@ static inline int lrint(double x)
 #endif
 
 static
-inline double pcm_clip(double n, double min_value, double max_value)
+inline float pcm_clip(const float n, const float min_value, const float max_value)
 {
     if (n < min_value)
         return min_value;

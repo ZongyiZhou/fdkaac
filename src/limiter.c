@@ -87,7 +87,7 @@ static int read_frames(pcm_reader_t *reader, void *buffer, unsigned nframes)
                 return -1;
             x = bp->data;
             for (i = 0; i < res; ++i)
-                x[bp->count++] = pcm_clip(ip[i * nch + n], -3.0, 3.0);
+                x[bp->count++] = pcm_clip(ip[i * nch + n], -3.0f, 3.0f);
             limit = bp->count;
             if (limit > 0 && res > 0) {
                 float last = x[limit - 1];
