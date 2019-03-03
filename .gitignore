@@ -1,4 +1,10 @@
 *.o
+*.obj
+*.a
+*.lib
+*.exe
+*.pdb
+*.tlog
 *~
 Makefile
 Makefile.in
@@ -20,3 +26,5 @@ src/.deps/
 src/.dirstamp
 stamp-h1
 fdkaac
+.vs
+*.user
