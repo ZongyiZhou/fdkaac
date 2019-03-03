@@ -68,7 +68,7 @@ static int read_frames(pcm_reader_t *reader, void *buffer, unsigned nframes)
         float   *ip = sbuf;
         int16_t *op = buffer;
         for (i = 0; i < count; ++i)
-            op[i] = pcm_clip(ip[i] * 32768.f, -32768.f, 32767.f);
+            op[i] = pcm_float_2_s16(ip[i]);
     } else {
         int32_t *ip = sbuf;
         int16_t *op = buffer;

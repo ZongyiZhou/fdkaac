@@ -4,6 +4,7 @@
  */
 #ifndef LPCM_H
 #define LPCM_H
+#include "fdk-aac/FDK_archdef.h"
 
 enum pcm_type {
     PCM_TYPE_UNKNOWN = 0,
@@ -31,25 +32,47 @@ typedef struct pcm_sample_description_t {
 #define PCM_BYTES_PER_CHANNEL(desc) \
     ((desc)->bytes_per_frame / (desc)->channels_per_frame)
 
-#if defined(_MSC_VER) && _MSC_VER < 1800
-#  ifdef _M_IX86
-static inline int lrint(double x)
-{
-    int n;
-    _asm {
-        fld x
-        fistp n
-    }
-    return n;
+#ifdef __x86__
+#ifdef _MSC_VER
+#include <intrin.h>
+inline int lrintf_fast(const float value) {
+    return _mm_cvtss_si32(_mm_set_ss(value));
 }
-#  else
-#    include <emmintrin.h>
-static inline int lrint(double x)
-{
-    return _mm_cvtsd_si32(_mm_load_sd(&x));
+#define lrintf(v) lrintf_fast(v)
+
+inline int lrint_fast(const double value) {
+    return _mm_cvtsd_si32(_mm_set_sd(value));
 }
-#  endif
-#endif
+#define lrint(v) lrint_fast(v)
+
+#ifdef _M_X64
+inline long long llrintf_fast(const float value) {
+    return _mm_cvtss_si64(_mm_set_ss(value));
+}
+#define llrintf(v) llrintf_fast(v)
+
+inline long long llrint_fast(const double value) {
+    return _mm_cvtsd_si64(_mm_set_sd(value));
+}
+#define llrint(v) llrint_fast(v)
+#endif // _M_X64
+#else
+#include <x86intrin.h>
+#endif // MSC_VER
+
+inline short pcm_float_2_s16(const float value)
+{
+    __m128i x = _mm_cvtps_epi32(_mm_set_ss(value * (float)(1<<15)));
+    x = _mm_packs_epi32(x, x);
+    return x.m128i_i16[0];
+}
+#else // __x86__
+inline short pcm_float_2_s16(const float value)
+{
+    int r = lrintf(value * (float)(1 << 15));
+    return min(32767, max(r, -32768));
+}
+#endif // __x86__
 
 static
 inline float pcm_clip(const float n, const float min_value, const float max_value)

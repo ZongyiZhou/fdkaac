@@ -54,8 +54,8 @@
 #  define m4af_htol64(x) (x)
 #endif
 
-#if _MSC_VER >= 1400
-#  include <stdlib.h>
+#if _MSC_VER >= 1200
+#  include <intrin.h>
 #  define m4af_swap16(x) _byteswap_ushort(x)
 #  define m4af_swap32(x) _byteswap_ulong(x)
 #  define m4af_swap64(x) _byteswap_uint64(x)
