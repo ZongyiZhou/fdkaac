@@ -22,13 +22,12 @@
     <ProjectGuid>{D7D4B982-8B16-4A10-8B1C-9527BD789709}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>libfdk-aac</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <PropertyGroup>
+    <PlatformToolset Condition="'$(PlatformToolset)' == '' and '$(MSBuildToolsVersion)' == '16.0'">v142</PlatformToolset>
     <PlatformToolset Condition="'$(PlatformToolset)' == '' and '$(MSBuildToolsVersion)' == '15.0'">v141</PlatformToolset>
     <PlatformToolset Condition="'$(PlatformToolset)' == '' and '$(MSBuildToolsVersion)' == '14.0'">v140_xp</PlatformToolset>
     <PlatformToolset Condition="'$(PlatformToolset)' == '' and '$(MSBuildToolsVersion)' == '12.0'">v120_xp</PlatformToolset>
-    <PlatformToolset Condition="'$(PlatformToolset)' == '' and '$(MSBuildToolsVersion)' == '11.0'">v110_xp</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup>
     <IntDir>libfdk-aac\$(Platform)\$(Configuration)</IntDir>
