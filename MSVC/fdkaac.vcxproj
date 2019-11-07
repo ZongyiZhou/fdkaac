@@ -22,6 +22,7 @@
     <ProjectGuid>{E62D32CF-E308-40BD-9FF0-8266C6CAA9AA}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>fdkaac</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <PropertyGroup>
     <PlatformToolset Condition="'$(PlatformToolset)' == '' and '$(MSBuildToolsVersion)' == '16.0'">v142</PlatformToolset>
@@ -53,7 +54,7 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>HAVE_STDINT_H;inline=__inline;_CRT_SECURE_NO_WARNINGS;WIN32;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>HAVE_STDINT_H;inline=__inline;_CRT_SECURE_NO_WARNINGS;WIN32;_CONSOLE;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>./include;../missings;.;..</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -61,8 +62,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy /D ..\fdk-aac\libAACdec\include\aacdecoder_lib.h include\fdk-aac\
-xcopy /D ..\fdk-aac\libAACenc\include\aacenc_lib.h include\fdk-aac\
+      <Command>xcopy /D ..\fdk-aac\libAACenc\include\aacenc_lib.h include\fdk-aac\
 xcopy /D ..\fdk-aac\libSYS\include\FDK_Audio.h include\fdk-aac\
 xcopy /D ..\fdk-aac\libSYS\include\genericStds.h include\fdk-aac\
 xcopy /D ..\fdk-aac\libSYS\include\machine_type.h include\fdk-aac\
@@ -75,6 +75,7 @@ xcopy /D ..\fdk-aac\libFDK\include\FDK_archdef.h include\fdk-aac\</Command>
       <Optimization>Disabled</Optimization>
       <MultiProcessorCompilation Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</MultiProcessorCompilation>
       <MultiProcessorCompilation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</MultiProcessorCompilation>
+      <EnableEnhancedInstructionSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
     <Link>
       <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)libfdk-aac.lib;%(AdditionalDependencies)</AdditionalDependencies>
