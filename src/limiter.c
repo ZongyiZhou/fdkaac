@@ -104,7 +104,7 @@ static int read_frames(pcm_reader_t *reader, void *buffer, unsigned nframes)
                 if (peak_pos == limit)
                     break;
                 start = peak_pos;
-                peak = fabs(x[peak_pos]);
+                peak = fabsf(x[peak_pos]);
                 while (start > bp->head && x[peak_pos] * x[start] >= 0.0f)
                     --start;
                 ++start;
@@ -112,7 +112,7 @@ static int read_frames(pcm_reader_t *reader, void *buffer, unsigned nframes)
                     float y;
                     if (x[peak_pos] * x[end] < 0.0f)
                         break;
-                    y = fabs(x[end]);
+                    y = fabsf(x[end]);
                     if (y > peak) {
                         peak = y;
                         peak_pos = end;
