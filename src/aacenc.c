@@ -169,6 +169,7 @@ int aacenc_init(HANDLE_AACENCODER *encoder, const aacenc_param_t *params,
     int channel_mode;
     int aot;
     LIB_INFO lib_info;
+    AACENC_ERROR err;
 
     *encoder = 0;
     aacenc_get_lib_info(&lib_info);
@@ -177,8 +178,8 @@ int aacenc_init(HANDLE_AACENCODER *encoder, const aacenc_param_t *params,
         fprintf(stderr, "ERROR: unsupported channel layout\n");
         goto FAIL;
     }
-    if (aacEncOpen(encoder, 0, 0) != AACENC_OK) {
-        fprintf(stderr, "ERROR: aacEncOpen() failed\n");
+    if ((err = aacEncOpen(encoder, 0, 0)) != AACENC_OK) {
+        fprintf(stderr, "ERROR: aacEncOpen() failed %d\n", err);
         goto FAIL;
     }
     aot = (params->profile ? params->profile : AOT_AAC_LC);
@@ -230,12 +231,12 @@ int aacenc_init(HANDLE_AACENCODER *encoder, const aacenc_param_t *params,
         aacEncoder_SetParam(*encoder, AACENC_HEADER_PERIOD,
                             params->header_period);
 
-    if (aacEncEncode(*encoder, 0, 0, 0, 0) != AACENC_OK) {
-        fprintf(stderr, "ERROR: encoder initialization failed\n");
+    if ((err = aacEncEncode(*encoder, 0, 0, 0, 0)) != AACENC_OK) {
+        fprintf(stderr, "ERROR: encoder initialization failed %d\n", err);
         goto FAIL;
     }
-    if (aacEncInfo(*encoder, info) != AACENC_OK) {
-        fprintf(stderr, "ERROR: cannot retrieve encoder info\n");
+    if ((err = aacEncInfo(*encoder, info)) != AACENC_OK) {
+        fprintf(stderr, "ERROR: cannot retrieve encoder info %d\n", err);
         goto FAIL;
     }
     return 0;
@@ -290,7 +291,7 @@ int aac_encode_frame(HANDLE_AACENCODER encoder,
 
     err = aacEncEncode(encoder, &ibdesc, &obdesc, &iargs, &oargs);
     if (err != AACENC_ENCODE_EOF && err != AACENC_OK) {
-        fprintf(stderr, "ERROR: aacEncEncode() failed\n");
+        fprintf(stderr, "ERROR: aacEncEncode() failed %d\n", err);
         return -1;
     }
     output->size = oargs.numOutBytes;
