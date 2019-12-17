@@ -1,3 +1,6 @@
 [submodule "libfdk-aac"]
 	path = fdk-aac
 	url = https://github.com/ZongyiZhou/opencore-amr-fdk-aac.git
+[submodule "static_math"]
+	path = static_math
+	url = https://github.com/Morwenn/static_math.git

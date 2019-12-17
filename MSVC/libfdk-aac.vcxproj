@@ -60,7 +60,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;_LIB;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../fdk-aac/libaacenc/include;../fdk-aac/libFDK/include;../fdk-aac/libMpegTPEnc/include;../fdk-aac/libPCMutils/include;../fdk-aac/libSACenc/include;../fdk-aac/libSBRenc/include;../fdk-aac/libSYS/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../fdk-aac/libaacenc/include;../fdk-aac/libFDK/include;../fdk-aac/libMpegTPEnc/include;../fdk-aac/libPCMutils/include;../fdk-aac/libSACenc/include;../fdk-aac/libSBRenc/include;../fdk-aac/libSYS/include;../static_math/include</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
