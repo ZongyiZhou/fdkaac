@@ -62,12 +62,12 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy /D ..\fdk-aac\libAACenc\include\aacenc_lib.h include\fdk-aac\
-xcopy /D ..\fdk-aac\libSYS\include\FDK_Audio.h include\fdk-aac\
-xcopy /D ..\fdk-aac\libSYS\include\genericStds.h include\fdk-aac\
-xcopy /D ..\fdk-aac\libSYS\include\machine_type.h include\fdk-aac\
-xcopy /D ..\fdk-aac\libSYS\include\syslib_channelMapDescr.h include\fdk-aac\
-xcopy /D ..\fdk-aac\libFDK\include\FDK_archdef.h include\fdk-aac\</Command>
+      <Command>xcopy /Y /D ..\fdk-aac\libAACenc\include\aacenc_lib.h include\fdk-aac\
+xcopy /Y /D ..\fdk-aac\libSYS\include\FDK_Audio.h include\fdk-aac\
+xcopy /Y /D ..\fdk-aac\libSYS\include\genericStds.h include\fdk-aac\
+xcopy /Y /D ..\fdk-aac\libSYS\include\machine_type.h include\fdk-aac\
+xcopy /Y /D ..\fdk-aac\libSYS\include\syslib_channelMapDescr.h include\fdk-aac\
+xcopy /Y /D ..\fdk-aac\libFDK\include\FDK_archdef.h include\fdk-aac\</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
