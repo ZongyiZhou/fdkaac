@@ -66,11 +66,17 @@ void pcm_teardown(pcm_reader_t **r)
 static inline
 uint32_t bitcount(uint32_t bits)
 {
+#if defined(__GNUC__)
+    return __builtin_popcount(bits);
+#elif _MSC_VER > 1200 && defined(__AVX__) // FIXME: popcnt also available on some CPUs without AVX
+    return __popcnt(bits);
+#else
     bits = (bits & 0x55555555) + (bits >> 1 & 0x55555555);
     bits = (bits & 0x33333333) + (bits >> 2 & 0x33333333);
     bits = (bits & 0x0f0f0f0f) + (bits >> 4 & 0x0f0f0f0f);
     bits = (bits & 0x00ff00ff) + (bits >> 8 & 0x00ff00ff);
-    return (bits & 0x0000ffff) + (bits >>16 & 0x0000ffff);
+    return (bits & 0x0000ffff) + (bits >>16);
+#endif
 }
 
 #define TRY_IO(expr) \
