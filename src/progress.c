@@ -37,7 +37,7 @@ void print_seconds(FILE *fp, double seconds)
     int h, m, s, millis;
     seconds_to_hms(seconds, &h, &m, &s, &millis);
     if (h)
-        fprintf(stderr, "%d:%02d:%02d.%03d", h, m, s, millis);
+        fprintf(stderr, "%d:%02d:%02d", h, m, s);
     else
         fprintf(stderr, "%02d:%02d.%03d", m, s, millis);
 }
