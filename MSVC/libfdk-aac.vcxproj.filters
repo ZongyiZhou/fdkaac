@@ -282,6 +282,15 @@
     <ClCompile Include="..\fdk-aac\libFDK\src\FDK_lpc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\fdk-aac\libFDK\src\x86\fft_rad2_x86.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fdk-aac\libFDK\src\x86\scale_x86.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fdk-aac\libSBRenc\src\x86\resampler_x86.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\fdk-aac\libAACenc\include\aacenc_lib.h">
@@ -594,6 +603,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\fdk-aac\libSYS\include\wav_file.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fdk-aac\libFDK\include\x86\cplx_mul_x86.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fdk-aac\libFDK\include\x86\scale_x86.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fdk-aac\libFDK\include\x86\fixmadd_x86.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fdk-aac\libFDK\include\x86\fixpoint_math_x86.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fdk-aac\libFDK\include\bswap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

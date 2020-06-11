@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -156,6 +156,18 @@
     <ClCompile Include="..\fdk-aac\libFDK\src\mdct.cpp" />
     <ClCompile Include="..\fdk-aac\libFDK\src\qmf.cpp" />
     <ClCompile Include="..\fdk-aac\libFDK\src\scale.cpp" />
+    <ClCompile Include="..\fdk-aac\libFDK\src\x86\fft_rad2_x86.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\fdk-aac\libFDK\src\x86\scale_x86.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\fdk-aac\libMpegTPEnc\src\tpenc_adif.cpp" />
     <ClCompile Include="..\fdk-aac\libMpegTPEnc\src\tpenc_adts.cpp" />
     <ClCompile Include="..\fdk-aac\libMpegTPEnc\src\tpenc_asc.cpp" />
@@ -194,6 +206,12 @@
     <ClCompile Include="..\fdk-aac\libSBRenc\src\sbr_misc.cpp" />
     <ClCompile Include="..\fdk-aac\libSBRenc\src\ton_corr.cpp" />
     <ClCompile Include="..\fdk-aac\libSBRenc\src\tran_det.cpp" />
+    <ClCompile Include="..\fdk-aac\libSBRenc\src\x86\resampler_x86.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\fdk-aac\libSYS\src\genericStds.cpp" />
     <ClCompile Include="..\fdk-aac\libSYS\src\syslib_channelMapDescr.cpp" />
   </ItemGroup>
@@ -239,6 +257,7 @@
     <ClInclude Include="..\fdk-aac\libAACenc\src\transform.h" />
     <ClInclude Include="..\fdk-aac\libFDK\include\abs.h" />
     <ClInclude Include="..\fdk-aac\libFDK\include\autocorr2nd.h" />
+    <ClInclude Include="..\fdk-aac\libFDK\include\bswap.h" />
     <ClInclude Include="..\fdk-aac\libFDK\include\clz.h" />
     <ClInclude Include="..\fdk-aac\libFDK\include\common_fix.h" />
     <ClInclude Include="..\fdk-aac\libFDK\include\cplx_mul.h" />
@@ -263,7 +282,11 @@
     <ClInclude Include="..\fdk-aac\libFDK\include\scramble.h" />
     <ClInclude Include="..\fdk-aac\libFDK\include\x86\abs_x86.h" />
     <ClInclude Include="..\fdk-aac\libFDK\include\x86\clz_x86.h" />
+    <ClInclude Include="..\fdk-aac\libFDK\include\x86\cplx_mul_x86.h" />
+    <ClInclude Include="..\fdk-aac\libFDK\include\x86\fixmadd_x86.h" />
     <ClInclude Include="..\fdk-aac\libFDK\include\x86\fixmul_x86.h" />
+    <ClInclude Include="..\fdk-aac\libFDK\include\x86\fixpoint_math_x86.h" />
+    <ClInclude Include="..\fdk-aac\libFDK\include\x86\scale_x86.h" />
     <ClInclude Include="..\fdk-aac\libMpegTPEnc\include\mpegFileWrite.h" />
     <ClInclude Include="..\fdk-aac\libMpegTPEnc\include\tpenc_lib.h" />
     <ClInclude Include="..\fdk-aac\libMpegTPEnc\include\tp_data.h" />
