@@ -480,7 +480,7 @@ int parse_options(int argc, char **argv, aacenc_param_ex_t *params)
         fprintf(stderr, "stdout streaming is not available on M4A output\n");
         return -1;
     }
-    if (params->bitrate && params->bitrate < 10000)
+    if (params->bitrate && params->bitrate < 1000)
         params->bitrate *= 1000;
 
     if (params->is_raw) {
