@@ -120,7 +120,7 @@ char *aacenc_load_tag_from_file(const char *path, uint32_t *data_size)
     }
     fseeko(fp, 0, SEEK_SET);
     data = malloc(size + 1);
-    if (data) fread(data, 1, size, fp);
+    if (data) size = fread(data, 1, size, fp);
     data[size] = 0;
     *data_size = (uint32_t)size;
 END:

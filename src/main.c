@@ -709,7 +709,7 @@ pcm_reader_t *open_input(aacenc_param_ex_t *params)
 {
     pcm_io_context_t io = { 0 };
     pcm_reader_t *reader = 0;
-    pcm_sample_description_t *fmt;
+    const pcm_sample_description_t *fmt;
 
     if ((params->input_fp = aacenc_fopen(params->input_filename, "rb")) == 0) {
         aacenc_fprintf(stderr, "ERROR: %s: %s\n", params->input_filename,

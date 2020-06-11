@@ -266,7 +266,7 @@ static pcm_reader_vtbl_t my_vtable = {
 pcm_reader_t *pcm_open_native_converter(pcm_reader_t *reader)
 {
     pcm_native_converter_t *self = 0;
-    pcm_sample_description_t *fmt = pcm_get_format(reader);
+    pcm_sample_description_t *fmt = (pcm_sample_description_t*)pcm_get_format(reader);
 
     if (fmt->bits_per_channel == 32 && fmt->channels_per_frame * 4 == fmt->bytes_per_frame &&
 #if WORDS_BIGENDIAN
