@@ -101,5 +101,8 @@
     <ClInclude Include="..\src\parson.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\archdef.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

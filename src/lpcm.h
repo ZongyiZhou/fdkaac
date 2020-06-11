@@ -4,7 +4,8 @@
  */
 #ifndef LPCM_H
 #define LPCM_H
-#include "fdk-aac/FDK_archdef.h"
+#include "archdef.h"
+#include <math.h>
 
 enum pcm_type {
     PCM_TYPE_UNKNOWN = 0,

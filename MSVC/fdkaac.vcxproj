@@ -55,7 +55,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>HAVE_STDINT_H;inline=__inline;_CRT_SECURE_NO_WARNINGS;WIN32;_CONSOLE;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./include;../missings;.;..</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./include;../missings;..</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -142,6 +142,7 @@ xcopy /Y /D ..\fdk-aac\libFDK\include\FDK_archdef.h include\fdk-aac\</Command>
   <ItemGroup>
     <ClInclude Include="..\missings\getopt.h" />
     <ClInclude Include="..\src\aacenc.h" />
+    <ClInclude Include="..\src\archdef.h" />
     <ClInclude Include="..\src\catypes.h" />
     <ClInclude Include="..\src\compat.h" />
     <ClInclude Include="..\src\lpc.h" />
