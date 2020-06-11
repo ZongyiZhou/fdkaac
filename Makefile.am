@@ -23,21 +23,21 @@ fdkaac_SOURCES = \
 dist_man_MANS = man/fdkaac.1
 
 fdkaac_LDADD = \
-    @LIBICONV@ @CHARSET_LIB@ -lfdk-aac -lm
+    @LIBICONV@ @CHARSET_LIB@ -lm
 
 if FDK_PLATFORM_POSIX
     fdkaac_SOURCES += \
-	src/compat_posix.c
+    src/compat_posix.c
 endif
 
 if FDK_PLATFORM_WIN32
     fdkaac_SOURCES += \
-	src/compat_win32.c
+    src/compat_win32.c
 endif
 
 if FDK_NO_GETOPT_LONG
     fdkaac_SOURCES += \
-	missings/getopt.c
+    missings/getopt.c
     AM_CPPFLAGS = -Imissings
 endif
 
